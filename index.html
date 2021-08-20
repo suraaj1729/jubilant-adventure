@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<style>
+    #con {
+        position: relative;
+        margin: auto;
+        border: 3px solid red;
+        height: 40vw;
+        width: 40vw;
+        background: url(index.png) no-repeat;
+        background-size: 100%;
+    }
+
+    .container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        border: 3px solid rgb(250, 157, 157);
+        background-color: rgb(241, 194, 194);
+        margin: 10px;
+        padding: 10px;
+        grid-column-gap: 5px;
+    }
+
+    #container-1,
+    #container-2 {
+        margin: 10px;
+    }
+
+    #hour,
+    #minute,
+    #second {
+        position: absolute;
+        background-color: black;
+        border-radius: 10px;
+        transform-origin: bottom;
+    }
+
+    #hour {
+        height: 25%;
+        width: 2%;
+        top: 24.5%;
+        left: 49.2%;
+    }
+
+    #minute {
+        height: 35%;
+        width: 1.7%;
+        top: 15%;
+        left: 48.7%;
+    }
+
+    #second {
+        height: 40%;
+        width: 1.5%;
+        top: 10%;
+        left: 48.7%;
+    }
+
+    #timer {
+        font-size: 180px;
+        text-align: center;
+    }
+
+    #start,
+    #stop,
+    #reset {
+        height: 70px;
+        width: 100px;
+        text-size-adjust: 70%;
+        position: absolute;
+        margin: 15px;
+    }
+
+    #start {
+        left: 38%;
+    }
+
+    #stop {
+        left: 47%;
+    }
+
+    #reset {
+        left: 57%;
+    }
+    #hh{
+        font-size: 100px;
+        text-align: center;
+    }
+</style>
+
+<body>
+    <div id="con">
+        <div id="hour"></div>
+        <div id="minute"></div>
+        <div id="second"></div>
+    </div>
+    <div class="container">
+        <div id="container-1">
+            <h3>The current time is : <span id="time"></span></h3>
+        </div>
+        <div id="container-2">
+            <h3>Todays date : <span id="date"></span></h3>
+        </div>
+    </div>
+    <h2 id="hh">Stop watch</h2>
+    <div id="timer">
+        0:0:0
+    </div>
+    <div>
+        <button id="start" onclick="START()">start</button>
+        <button id="stop" onclick="STOP()">stop</button>
+        <button id="reset" onclick="RESET()">reset</button>
+    </div>
+</body>
+
+<script>
+    let d, htime, mtime, stimehr, mr, sr;
+    let a, time, date;
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    setInterval(() => {
+
+        d = new Date();
+        htime = d.getHours();
+        mtime = d.getMinutes();
+        stime = d.getSeconds();
+
+        hr = 30 * htime + mtime / 2;
+        mr = 6 * mtime;
+        sr = 6 * stime;
+
+        document.getElementById('second').style.transform = `rotate(${sr}deg)`;
+        document.getElementById('minute').style.transform = `rotate(${mr}deg)`;
+        document.getElementById('hour').style.transform = `rotate(${hr}deg)`;
+
+        a = new Date();
+        time = a.getHours() + ':' + a.getMinutes() + ':' + a.getSeconds();
+        date = a.toLocaleDateString(undefined, options);
+        document.getElementById('time').innerHTML = time;
+        document.getElementById('date').innerHTML = d
+    }, 1000);
+
+    let timert = document.getElementById('timer');
+    let min = 0;
+    let sec = 0;
+    let ms = 0;
+
+    let stopt = true;
+
+    function START() {
+        if (stopt == true) {
+            stopt = false;
+            runntime();
+        }
+    }
+
+    function runntime() {
+        if (stopt == false) {
+
+            min = parseInt(min);
+            sec = parseInt(sec);
+            ms = parseInt(ms);
+
+            ms = ms + 1;
+            if (ms == 100) {
+                sec = sec + 1;
+                ms = 0;
+            }
+            if (sec == 60) {
+                min = min + 1;
+                sec = 0;
+                ms = 0;
+            }
+            timert.innerHTML = min + ':' + sec + ':' + ms;
+        }
+    }
+    setInterval(runntime, 10);
+
+    function STOP() {
+        if (stopt == false) {
+            stopt = true;
+        }
+    }
+
+    function RESET() {
+        timert.innerHTML = "0:0:0";
+        stopt = true;
+        min = 0;
+        sec = 0;
+        ms = 0;
+    }
+</script>
+
+</html>
